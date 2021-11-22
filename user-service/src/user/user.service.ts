@@ -11,9 +11,10 @@ export class UserService {
 
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
    
-  create(createUserDto: CreateUserDto) {
+ async  create(createUserDto: CreateUserDto): Promise<ResponseServiceInterface>{
     const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    const user =  await createdUser.save();
+    return {data:user,statusCode:200}
   }
 
  async findAll(): Promise<ResponseServiceInterface>{

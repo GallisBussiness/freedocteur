@@ -19,11 +19,20 @@ export class UserController {
     return this.authService.login(req.user);
   }
 
+  @Get('auth/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req){}
+
+  @Get('auth/google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthCallback(@Req() req){
+    return req.user ?? 'no user from google';
+  }
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const result =  await this.userService.create(createUserDto)
-    result.pipe(
+    return result.pipe(
       tap(res => console.log(res))
     );
   }
