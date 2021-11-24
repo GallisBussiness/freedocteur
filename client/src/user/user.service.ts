@@ -4,6 +4,8 @@ import { ResponseServiceInterface } from 'src/ResponseServiceInterface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { User } from './entities/user.entity';
+import { Observable, tap } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -25,6 +27,10 @@ export class UserService {
   
   }
 
+  regsiterUserFromGoogle(email: string) {
+    return this.user.send<ResponseServiceInterface,string>('registerFromGoogle',email);
+  }
+
   findAll() {
     return this.user.send<ResponseServiceInterface,string>('findAllUser','');
   }
@@ -37,7 +43,10 @@ export class UserService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string):Observable<ResponseServiceInterface> {
+    return this.user.send<ResponseServiceInterface,string>('removeUser',id)
+    .pipe(
+      tap(res => console.log(res))
+    )
   }
 }

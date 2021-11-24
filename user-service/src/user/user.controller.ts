@@ -17,6 +17,11 @@ export class UserController {
   create(@Payload() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
+
+  @MessagePattern('registerFromGoogle')
+  registerFromGoogle(@Payload() username: string) {
+    return this.userService.registerFromGoogle(username);
+  }
    
   
   @MessagePattern('findAllUser')
@@ -35,7 +40,7 @@ export class UserController {
   }
 
   @MessagePattern('removeUser')
-  remove(@Payload() id: number) {
+  remove(@Payload() id: string) {
     return this.userService.remove(id);
   }
 }

@@ -1,12 +1,27 @@
 import { Prop } from "@nestjs/mongoose";
 
+export enum TYPE_USER {
+    MEDECIN = "MEDECIN",
+    PATIENT = "PATIENT"
+  }
+
+  export enum STATUS_USER {
+    ACTIVATE = "ACTIVATE",
+    DISABLED = "DISABLED",
+  }
+
+  export enum ROLES {
+    SUPER_ADMIN = "SUPER_ADMIN",
+    ADMIN = "ADMIN",
+    SECRETAIRE = "SECRETAIRE",
+    USER = "USER",
+  }
+
 export class CreateUserDto {
-    @Prop()
     username: string;
-  
-    @Prop()
-    password: string;
-  
-    @Prop()
-    role: string;
+    password?: string;
+    type_user: TYPE_USER;
+    status: STATUS_USER
+    role: ROLES
+
 }

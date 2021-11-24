@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Mongoose, Types } from 'mongoose';
 import { ResponseServiceInterface } from 'src/ResponseServiceInterface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from './entities/user.entity';
+import { TYPE_USER, User, UserDocument } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -13,6 +13,14 @@ export class UserService {
    
  async  create(createUserDto: CreateUserDto): Promise<ResponseServiceInterface>{
     const createdUser = new this.userModel(createUserDto);
+    const user =  await createdUser.save();
+    return {data:user,statusCode:200}
+  }
+
+  async  registerFromGoogle(username): Promise<ResponseServiceInterface>{
+    
+    const newUserFromGoogle = {username,isResgisteredFromGoogle:true,type_user:TYPE_USER.PATIENT};
+    const createdUser = new this.userModel(newUserFromGoogle);
     const user =  await createdUser.save();
     return {data:user,statusCode:200}
   }
@@ -31,12 +39,12 @@ export class UserService {
     return {data:user,statusCode:200};
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: Types.ObjectId, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.userModel.deleteOne({id:new Types.ObjectId(id)});
   }
 
 }

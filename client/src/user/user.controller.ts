@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { tap, map, catchError, of } from 'rxjs';
-import { LoginUserDto } from './dto/login-user-dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ResponseServiceInterface } from 'src/ResponseServiceInterface';
 import { AuthService } from 'src/auth/auth.service';
@@ -19,15 +18,17 @@ export class UserController {
     return this.authService.login(req.user);
   }
 
-  @Get('auth/google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req){}
+  // @Get('auth/google')
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuth(@Req() req){}
 
-  @Get('auth/google/callback')
-  @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(@Req() req){
-    return req.user ?? 'no user from google';
-  }
+  // @Get('auth/google/callback')
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuthCallback(@Req() req){
+  //   if(!req.user) throw new BadRequestException();
+  //     const { email } = req.user;
+  //     return  this.authService.signinFromGoogle(email);
+  // }
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
@@ -61,6 +62,6 @@ export class UserController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
   }
 }
