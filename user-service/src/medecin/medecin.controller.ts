@@ -1,16 +1,17 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { MedecinService } from './medecin.service';
-import { CreateMedecinDto } from './dto/create-medecin.dto';
 import { UpdateMedecinDto } from './dto/update-medecin.dto';
+import { CreateMedecinUserDto } from './dto/createMedecinUserDto';
+import { Types } from 'mongoose';
 
 @Controller()
 export class MedecinController {
   constructor(private readonly medecinService: MedecinService) {}
 
   @MessagePattern('createMedecin')
-  create(@Payload() createMedecinDto: CreateMedecinDto) {
-    return this.medecinService.create(createMedecinDto);
+  create(@Payload() createMedecinUserDto: CreateMedecinUserDto) {
+    return this.medecinService.create(createMedecinUserDto);
   }
 
   @MessagePattern('findAllMedecin')
@@ -19,7 +20,7 @@ export class MedecinController {
   }
 
   @MessagePattern('findOneMedecin')
-  findOne(@Payload() id: number) {
+  findOne(@Payload() id: Types.ObjectId) {
     return this.medecinService.findOne(id);
   }
 

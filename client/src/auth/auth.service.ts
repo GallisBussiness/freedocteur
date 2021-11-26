@@ -1,15 +1,18 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService,private jwtService: JwtService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const {data:user} = await this.userService.login(username);
-    console.log(user.password,pass);
+    const { data: user } = await this.userService.login(username);
+    console.log(user.password, pass);
     const isMatch = await bcrypt.compare(pass, user.password);
     if (user && isMatch) {
       const { password, ...result } = user;
@@ -21,8 +24,8 @@ export class AuthService {
   login(user) {
     const payload = { username: user.username, sub: user._id };
     return {
-      data: this.jwtService.sign(payload,{expiresIn:'1h'}),
-      statusCode: 200
+      data: this.jwtService.sign(payload, { expiresIn: '1h' }),
+      statusCode: 200,
     };
   }
   // async verifyFromGoogle(username:string) {
@@ -33,7 +36,6 @@ export class AuthService {
   //   return null;
   // }
 
-
   // async signinFromGoogle(email) {
   //   const {data:user} = await this.verifyFromGoogle(email);
   //   if (user) {
@@ -43,5 +45,4 @@ export class AuthService {
 
   //   return this.login(userFromService);
   // }
-
 }

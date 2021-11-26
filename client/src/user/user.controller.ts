@@ -1,20 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { tap, map, catchError, of } from 'rxjs';
+import { tap, map } from 'rxjs';
 import { AuthGuard } from '@nestjs/passport';
 import { ResponseServiceInterface } from 'src/ResponseServiceInterface';
 import { AuthService } from 'src/auth/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
-
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post('login')
   @UseGuards(AuthGuard('local'))
-  async login(@Req() req):Promise<ResponseServiceInterface> {
+  async login(@Req() req): Promise<ResponseServiceInterface> {
     return this.authService.login(req.user);
   }
 
@@ -32,32 +44,32 @@ export class UserController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    const result =  await this.userService.create(createUserDto)
-    return result.pipe(
-      tap(res => console.log(res))
-    );
+    console.log(createUserDto);
+    const result = await this.userService.create(createUserDto);
+    return result.pipe(tap((res) => console.log(res)));
   }
- 
+
   @Get()
   @UseGuards(AuthGuard('jwt'))
   findAll() {
-    return this.userService.findAll()
-    .pipe(
-      tap(res => console.log(res)),
-      map( res  => {
-        return  res;
-      })
+    return this.userService.findAll().pipe(
+      tap((res) => console.log(res)),
+      map((res) => {
+        return res;
+      }),
     );
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id).pipe(tap((res) => console.log(res)));
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService
+      .update(id, updateUserDto)
+      .pipe(tap((res) => console.log(res)));
   }
 
   @Delete(':id')

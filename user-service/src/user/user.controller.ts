@@ -1,8 +1,9 @@
-import { Controller,Request} from '@nestjs/common';
+import { Controller} from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Types } from 'mongoose';
 
 @Controller('user')
 export class UserController {
@@ -18,19 +19,18 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @MessagePattern('registerFromGoogle')
-  registerFromGoogle(@Payload() username: string) {
-    return this.userService.registerFromGoogle(username);
-  }
-   
-  
+  // @MessagePattern('registerFromGoogle')
+  // registerFromGoogle(@Payload() username: string) {
+  //   return this.userService.registerFromGoogle(username);
+  // }
+
   @MessagePattern('findAllUser')
   findAll() {
     return this.userService.findAll();
   }
 
   @MessagePattern('findOneUser')
-  findOne(@Payload() id: number) {
+  findOne(@Payload() id: Types.ObjectId) {
     return this.userService.findOne(id);
   }
 

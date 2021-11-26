@@ -1,7 +1,7 @@
 export class LoginUserDto {
-    username: string;
+  username: string;
 }
 
 export class LoginUserFromGoogleDto {
-    username: string;
+  username: string;
 }

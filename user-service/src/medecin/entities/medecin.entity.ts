@@ -1,34 +1,18 @@
-import { Prop } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export enum STATE {
-    PAYE = "PAYE",
-    NOTPAYE = "NOTPAYE",
-  }
+export type MedecinDocument = Medecin & Document;
+
+@Schema()
 export class Medecin {
-    @Prop()
-    firstName: string;
+  @Prop()
+  firstName: string;
 
-    @Prop()
-    lastName: string;
+  @Prop()
+  lastName: string;
 
-    @Prop()
-    description: string;
-
-    @Prop()
-    phoneNumber: string;
-
-    @Prop()
-    adresse: string;
-
-    @Prop()
-    state: STATE;
-
-    @Prop()
-    speciality: string;
-
-    @Prop()
-    nationality: string;
-
-    @Prop()
-    photo: string;
+  @Prop()
+  userId: string;
 }
+
+export const MedecinSchema = SchemaFactory.createForClass(Medecin);
