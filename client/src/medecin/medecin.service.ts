@@ -29,8 +29,10 @@ export class MedecinService {
   }
 
   update(updateMedecinDto: UpdateMedecinDto) {
-    const { id } = updateMedecinDto;
-    return `This action updates a #${id} medecin`;
+    return this.medecin.send<ResponseServiceInterface, UpdateMedecinDto>(
+      'updateMedecin',
+      updateMedecinDto,
+    );
   }
 
   remove(id: string) {

@@ -60,8 +60,18 @@ export class MedecinService {
     return { data: medecin, statusCode: 200 };
   }
 
-  update(id: Types.ObjectId, updateMedecinDto: UpdateMedecinDto) {
-    return `This action updates a #${id} medecin`;
+  async update(id: Types.ObjectId, updateMedecinDto: UpdateMedecinDto) {
+    try {
+      const result = (
+        await this.medecinModel.updateOne(
+          { id: new Types.ObjectId(id) },
+          { updateMedecinDto },
+        )
+      ).acknowledged;
+      return { data: result, statusCode: 200 };
+    } catch (e) {
+      return { data: false, statusCode: 500 };
+    }
   }
 
   remove(id: number) {

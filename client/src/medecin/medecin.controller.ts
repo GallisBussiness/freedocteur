@@ -18,8 +18,8 @@ export class MedecinController {
 
   @Post()
   async create(@Body() createMedecinDto: CreateMedecinDto) {
-    const res =  await this.medecinService.create(createMedecinDto);
-     return res.pipe(tap((res) => console.log(res)));
+    const res = await this.medecinService.create(createMedecinDto);
+    return res.pipe(tap((res) => console.log(res)));
   }
 
   @Get()
@@ -34,7 +34,9 @@ export class MedecinController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMedecinDto: UpdateMedecinDto) {
-    return this.medecinService.update({ ...updateMedecinDto, id });
+    return this.medecinService
+      .update({ ...updateMedecinDto, id })
+      .pipe(tap((res) => console.log(res)));
   }
 
   @Delete(':id')

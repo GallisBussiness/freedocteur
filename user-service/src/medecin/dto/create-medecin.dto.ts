@@ -1,7 +1,13 @@
 import { Types } from 'mongoose';
 
 export class CreateMedecinDto {
-  firstName: string;
-  lastName: string;
-  userId: Types.ObjectId;
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  userId?: Types.ObjectId;
+  adresse?: string;
+  phoneNumber?: string;
+  email?: string;
+  description?: string;
+  speciality?: string;
 }
